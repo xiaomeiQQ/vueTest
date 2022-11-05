@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vueTest</title>
+    <style>
+        .avatar{
+            position: relative;
+            width: 4rem;
+            height: 4rem;
+            background:#111;
+            border-radius: 50%;
+            border: 2px solid #111;
+            overflow: hidden;
+        }
+        .head{
+            position: absolute;
+            top: 0.5rem;
+            left: 1.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background-color: #fff;
+        }
+        .body{
+            position: absolute;
+            bottom: -1rem;
+            left: 0.5rem;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <form action="">
+            <div class="avatar"
+                @mouseover="formHover=true"
+                @mouseleave="formHover=false"
+                :style="{
+                    background: activeColor ? activeColor:'#ddd'
+            }">
+                <div class="head" :style="{
+                    left: formHover? '2rem':'0.5rem'
+                }"></div>
+                <div class="body"></div>
+            </div>
+            <label for="">email</label>
+            <input type="email" v-model="email">
+            {{email}}
+            <br>
+            <label for="">name</label>
+            <input type="text" v-model.trim="name">
+            {{name}}
+            <div>
+                <label for="">喜歡喝紅酒</label>
+                <input type="checkbox" name="drink" value="紅酒" v-model="drink">
+                <label for="">喜歡喝燒酒</label>
+                <input type="checkbox" name="drink" value="燒酒" v-model="drink">
+                {{drink}}
+            </div>
+            <div>
+                <input type="radio" id="taipei" name="location" value="taipei" v-model="location">
+                <label for="taipei">taipei</label>
+                <input type="radio" id="taoyuan" name="location" value="taoyuan" v-model="location">
+                <label for="taoyuan">taoyuan</label>
+                {{location}}
+            </div>
+            <!-- <p v-if="location === 'taipei'">taipei</p>
+            <p v-if-else-if="location === 'taoyuan'">taoyuan</p>
+            <p v-else>阿災</p> -->
+
+            <label for="food">food</label>
+            <select name="food" id="food" v-model="food">
+                <option disabled value="">請選擇</option>
+                <option value="pig">豬</option>
+                <option value="beef">牛</option>
+            </select>
+            {{food}}
+            <div>
+                <input type="color" id="head" name="head" v-model="activeColor" value="">
+                <label for="head">Head</label>
+                {{activeColor}}
+            </div>
+            <div>
+                {{date}}
+                <label for="start">Start date:</label>
+                <input type="date" id="start" name="trip-start" v-model="date" min="2022-01-01" max="2022-12-31">
+            </div>
+        </form>
+    </div>
+<!-- Vue的函式庫 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        // console.log(Vue)
+        // 寫法一: Options
+        // 新增一個應用application->建立Vue實體(instance)
+        Vue.createApp({
+            data(){
+                return{
+                    formHover:false,
+                    email:'',
+                    name:'',
+                    drink:[],
+                    loacation:'',
+                    food:'',
+                    // color:'',
+                    activeColor:'',
+                    date:''
+                }
+            }
+        }).mount('#app') // 掛載(mount)在網頁結點(id="app")上
+
+        // 資料綁定 data bindings-->把畫面上的DOM和資料透過Vue實體來綁定
+    </script>
+</body>
+</html>

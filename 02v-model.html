@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vueTest</title>
+</head>
+<body>
+    <div id="app">
+        <h1 data-mode="dark">{{title}}</h1>
+        <h3>${{price}}元</h3>
+        <div class="purchase">
+            <button @click="reduceCount">-</button>
+            <!-- <input type="number" v-model="count"> -->
+            <input type="text" v-model.number="count">
+            <button @click="addCount">+</button>
+        </div>
+        <button>Add</button>
+        <p>總計: {{total}}元</p>
+    </div>
+<!-- Vue的函式庫 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return{
+                    title:'薯條',
+                    price:100,
+                    count:0,
+                    total:0
+                }
+            },
+            methods:{
+                // 上面button的@click裡面無法作用超過1行的作用域故把methods拿出來寫 例如要判斷0以下不能再扣了 if count<=0 要return
+                addCount(){
+                    // console.log(e);
+                    this.count+=1
+                    // this.total=this.count*this.price
+                    // 重複了所以就把他另外做成一個methods
+                    this.totalCount()
+                },
+                reduceCount(){
+                    if(this.count<=0) return
+                    // count =count -1
+                    this.count-=1
+                    // this.total=this.count*this.price
+                    this.totalCount()
+                },
+                totalCount(){
+                    this.total=this.count*this.price
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vueTest</title>
+    <style>
+        #app{
+            display: block;
+        }
+        img{
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- <div class="pagination">
+            <button v-for="page in 10" :key="page">{{page}}</button>
+        </div> -->
+        <header>
+            search: <input type="text" v-model="search"><br>
+            <!-- {{search}} -->
+            篩選出大於: <input type="number" v-model="min">-<input type="number" v-model="max">$的商品
+            <!-- {{min}} -->
+            <p>總計: {{total}}元</p>
+        </header>
+        <div v-if="load">loading...</div>
+        <div v-else class="productContainer">
+            <!-- v-for = for...in (變數 in 物件/陣列) -->
+            <!-- :=v-bind -->
+            <!-- @=v-on -->
+            <!-- 裡面可以下陣列 但要加( )包起來 -->
+            <!-- {{index}} -->
+            <div v-for=" (item,index) in product" :key="item.id">
+                <p>{{item.title}}</p>
+                <img :src="item.image" v-bind:alt="item.title">
+                <p>${{parsePrice(item.price)}}元</p>
+                <div>
+                    <button @click="reduceCount(index)">-</button>
+                    <!-- <input type="text" v-model.number="count"> -->
+                    <input type="number" min="0" v-model="count[index]">
+                    <button @click="addCount(index,1)">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Vue的函式庫 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        // methods可以帶參數 computed不行
+        Vue.createApp({
+            data(){
+                return{
+                    load: false,
+                    source:[],
+                    // product:[],
+                    // title:'薯條',
+                    // price:100,
+                    count:[],
+                    // total:0,
+                    search:'',
+                    // filter:0,
+                    min:0,
+                    max:0
+                }
+            },
+            // created:Vue實體被建立完
+            created(){
+                this.getResourse()
+            },
+            computed:{
+                product(){
+                    // if(this.min >0 || this.max>0){
+                    //     return this.source.filter(item=>{
+                    //         return item.price>this.min && item.price< this.max
+                    //     })
+                    //     return this.source.filter(item=>item.price>this.min)
+                    // }else{
+                    //     return this.source
+                    // }
+                    // if(this.search !==''){
+                    //     console.log(this.search);
+                    let cache=this.source
+                    if(this.min>0){ //篩選最小值
+                        cache=cache.filter((item,index)=>{
+                            return item.price>this.min
+                        })
+                    }
+                    if(this.max>0){ //篩選最大值
+                        cache=cache.filter((item,index)=>{
+                            return item.price<this.max
+                        })
+                    }
+                    if(this.search !==''){ // 篩選相符標題
+                        cache=cache.filter((item,index)=>{
+                            return item.title.includes(this.search)
+                        })
+                    }
+                    return cache
+                },
+                // return this.source
+                total(){
+                    if(this.product.length>0){
+                        let total=0
+                        for (const index in this.product){
+                            total +=this.count[index]*this.product[index]['price']
+                        }
+                        return parseInt(total)
+                    }else{
+                        return 0
+                    }
+                }
+            },
+            watch:{
+                // 監聽data或computed
+                total:{
+                    handler: function(newVal,oldVal) {
+                        if(newVal>1000){
+                            // console.log(newVal);
+                            // console.log(oldVal);
+                            alert('你要餓死了')
+                        }
+                    }
+                    // deep: true
+                }
+            },
+            
+            // mounted:渲染完後會做的事情
+            // mounted() {
+            //     // this.product.map(item=>{
+            //     //     this.count.push(0)
+            //     // })
+
+            //     // this.product.map(item=>{
+            //     //     this.count.push({
+            //     //         id:item.id,
+            //     //         count:0
+            //     //     })
+            //     // })
+            // },
+            methods:{
+                parsePrice(price){
+                    return `TWD ${price*33}`
+                },
+                getResourse(){
+                    this.load=true
+                    fetch('https://fakestoreapi.com/products')
+                    .then(res=>res.json())
+                    // .then(json=>console.log(json))
+                    .then(json=>{
+                        this.source=json
+                        for(item in this.product){
+                            this.count.push(0)
+                        }
+                        this.load=false
+                    })
+                    //初始化商品數量
+                },
+                addCount(index){
+                    this.count[index]+=1
+                    // this.total()
+                },
+                reduceCount(index){
+                    if(this.count[index]<=0) return
+                    this.count[index]-=1
+                    // this.total()
+                },
+                // totalCount(){
+                //     // 最笨想法是
+                //     this.total=0
+                //     // this.total+=this.count[0]*this.product[0]['price']
+                //     // this.total+=this.count[1]*this.product[1]['price']
+                //     for (const index in this.product){
+                //         this.total +=this.count[index]*this.product[index]['price']
+                //     }
+                //     this.total=parseInt(this.total)
+                //     // 四捨五入小數點後第二位
+
+                //     // this.total=this.count*this.price
+                //     // this.total=0
+
+                //     // 想法1
+                //     // this.count.map((item,index) =>{
+                //         // item: 商品數量
+                //         // index: 陣列位置
+                //         // this.product[index]: 商品資訊
+                //         // this.product[index]['price']: 商品價格
+                //         // console.log(this.product[index]['price']+':'+item);
+                //     // })
+
+                //     // 想法2
+                //     // this.count.map((item,index) =>{
+                //     //     // item: 商品數量
+                //     //     // index: 商品資訊陣列位置
+                //     //     // this.count[index]: 商品數量
+                //     //     console.log(this.count[index]+':'+item.price);
+                //     // })
+                //     // 想法3 Array.prototype.reduce()
+                // }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>

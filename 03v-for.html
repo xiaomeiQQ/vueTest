@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vueTest</title>
+    <style>
+        #app{
+            display: block;
+        }
+        img{
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="pagination">
+            <button v-for="page in 10" :key="page">{{page}}</button>
+        </div>
+        <div class="productContainer">
+            <!-- v-for = for...in (變數 in 物件/陣列) -->
+            <!-- :=v-bind -->
+            <!-- @=v-on -->
+            <!-- 裡面可以下陣列 但要加( )包起來 -->
+            <!-- {{index}} -->
+            <div v-for=" (item,index) in product" :key="item.id">
+                <p>{{item.title}}</p>
+                <img :src="item.image" :alt="item.title">
+                <p>${{item.price}}元</p>
+                <div>
+                    <button @click="reduceCount(index)">-</button>
+                    <!-- <input type="text" v-model.number="count"> -->
+                    <input type="number" min="0" v-model="count[index]">
+                    <button @click="addCount(index)">+</button>
+                </div>
+            </div>
+            <p>總計: {{total}}元</p>
+        </div>
+    </div>
+<!-- Vue的函式庫 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return{
+                    product:[{
+                        "id": 1,
+                        "title": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+                        "price": 109.95,
+                        "description": "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+                        "category": "men's clothing",
+                        "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+                        "rating": {
+                        "rate": 3.9,
+                        "count": 120
+                        }
+                        },
+                        {
+                        "id": 2,
+                        "title": "Mens Casual Premium Slim Fit T-Shirts ",
+                        "price": 22.3,
+                        "description": "Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.",
+                        "category": "men's clothing",
+                        "image": "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
+                        "rating": {
+                        "rate": 4.1,
+                        "count": 259
+                        }
+                        }
+                    ],
+                    // title:'薯條',
+                    // price:100,
+                    count:[],
+                    total:0
+                }
+            },
+            mounted() {
+                //初始化商品數量
+                for(item in this.product){
+                    this.count.push(0)
+                }
+
+                // this.product.map(item=>{
+                //     this.count.push(0)
+                // })
+
+                // this.product.map(item=>{
+                //     this.count.push({
+                //         id:item.id,
+                //         count:0
+                //     })
+                // })
+            },
+            methods:{
+                addCount(index){
+                    this.count[index]+=1
+                    this.totalCount()
+                },
+                reduceCount(index){
+                    if(this.count[index]<=0) return
+                    this.count[index]-=1
+                    this.totalCount()
+                },
+                totalCount(){
+                    // 最笨想法是
+                    this.total=0
+                    // this.total+=this.count[0]*this.product[0]['price']
+                    // this.total+=this.count[1]*this.product[1]['price']
+                    for (const index in this.product){
+                        this.total +=this.count[index]*this.product[index]['price']
+                    }
+                    this.total=parseInt(this.total)
+                    // 四捨五入小數點後第二位
+
+                    // this.total=this.count*this.price
+                    // this.total=0
+
+                    // 想法1
+                    // this.count.map((item,index) =>{
+                        // item: 商品數量
+                        // index: 陣列位置
+                        // this.product[index]: 商品資訊
+                        // this.product[index]['price']: 商品價格
+                        // console.log(this.product[index]['price']+':'+item);
+                    // })
+
+                    // 想法2
+                    // this.count.map((item,index) =>{
+                    //     // item: 商品數量
+                    //     // index: 商品資訊陣列位置
+                    //     // this.count[index]: 商品數量
+                    //     console.log(this.count[index]+':'+item.price);
+                    // })
+                    // 想法3 Array.prototype.reduce()
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>

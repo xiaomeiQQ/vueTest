@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vueTest</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{count}}</h1>
+        <hr>
+    </div>
+<!-- Vue的函式庫 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        //以下是Vue 2
+        // console.log(Vue)
+        // 寫法一
+        // new Vue({
+        //     data:{
+        //         count:1
+        //     },
+        //     el:'#app'
+        // })
+        // 寫法二
+        const App= new Vue({
+            data:{
+                count:2
+            },
+            // el:'#app'
+        })
+        App.$mount('#app')
+        // console.log(App)
+        //---------------------------------------------------------------
+        // 以下是Vue3 對比
+        // Vue.createApp({
+        //     data(){
+        //         return{
+        //             count:1, //number 數值
+        //             name:'😎', //string 字串
+        //             kind:'薯條', // string 字串
+        //             talk:true, // boolean 布林值
+        //             array:[1,2,3], //array 陣列
+        //             obj:{test:'123'} //object 物件
+        //         }
+        //     }
+        // }).mount('#app')
+    </script>
+</body>
+</html>

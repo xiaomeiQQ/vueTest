@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <style>
+        .files{
+            display: flex;
+            gap: 2%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .oct-29,.nov-05{
+            display: flex;
+            flex-direction: column;
+            justify-self: start;
+            align-items: center;
+        }
+        .oct-29 .wrap,.nov-05 .wrap{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        a{
+            font: 16px sans-serif;
+            width: auto;
+            padding: 8px 15px;
+            text-align: center;
+            text-decoration: none;
+            background-color: rgb(255, 242, 196);
+            color: rgb(169, 130, 2);
+            border-radius: 20px;
+            box-shadow: 1px 1px 1px 1px rgb(232, 227, 140);
+        }
+        a:hover{
+            background-color: rgb(242, 242, 242);
+            box-shadow: 1px 1px 1px 1px rgb(194, 194, 194);
+        }
+    </style>
+</head>
+<body>
+    <div class="files">
+        <div class="oct-29">
+            <h3>10/29</h3>
+            <div class="wrap">
+                <a href="./00vue2.html">00 : Vue2 vs Vue3</a>
+                <a href="./01quick-start.html">01 : quick start</a>
+                <a href="./02v-model.html">02 : v-model</a>
+                <a href="./03v-for.html">03 : v-for</a>
+                <a href="./04calculator.html">04 : calculator</a>
+            </div>
+        </div>
+        <div class="nov-05">
+            <h3>11/05</h3>
+            <div class="wrap">
+                <a href="./05products.html">05 : products</a>
+                <a href="./06register.html">06 : register</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
