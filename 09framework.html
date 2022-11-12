@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iView UI</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/view-ui-plus/dist/styles/viewuiplus.css">
+    <style>
+        .carousel1{
+            background-color: rgb(82, 82, 82);
+        }
+        .carousel2{
+            background-color: rgb(177, 240, 135);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <i-button @click="show">Click me!</i-button>
+        <Modal v-model="visible" title="Welcome">Welcome to View UI Plus</Modal>
+            <Carousel v-model="value" loop>
+                <CarouselItem>
+                    <div class="carousel">1</div>
+                </CarouselItem>
+                <CarouselItem>
+                    <div class="carouse2">2</div>
+                </CarouselItem>
+                <CarouselItem>
+                    <div class="carousel3">3</div>
+                </CarouselItem>
+                <CarouselItem>
+                    <div class="carouse4">4</div>
+                </CarouselItem>
+            </Carousel>
+    </div>
+<!-- Vue的函式庫 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!--iView UI 套件 -->
+    <script type="text/javascript" src="https://unpkg.com/view-ui-plus"></script>
+    <script>
+        const app=Vue.createApp({
+            data(){
+                return{
+                    visible:false,
+                    value: 0
+                }
+            },
+            methods: {
+                show(){
+                    this.visible=true;
+                }
+            },
+        })
+        //  use ViewUIPlus
+        app.use(ViewUIPlus);
+        app.mount('#app')
+    </script>
+</body>
+</html>

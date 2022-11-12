@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vueTest</title>
+    <style>
+        section{
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            font-size: 30rem;
+            align-items: center;
+        }
+        #section1{
+            background-color: rgb(132, 216, 232);
+        }
+        button{
+            font-size: 30px;
+            border: none;
+            background: none;
+        }
+        #section2{
+            background-color: rgb(123, 207, 255);
+        }
+        #section3{
+            background-color: rgb(59, 137, 255);
+        }
+        .blockBtnBox{
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 0;
+            top: 50%;
+        }
+        .blockBtnBox button{
+            margin-left: 15px;
+            color: #fff;
+            font-weight: 700;
+        }
+        .blockBtnBox .active{
+            color: rgb(0, 3, 189);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <section id="section1" ref="section1">
+            1
+            <button @click="scrollDown">⏬</button>
+        </section>
+        <section id="section2" ref="section2">
+            2
+        </section>
+        <section id="section3" ref="section3">
+            3
+            <button @click="scrollTo">⏫</button>
+        </section>
+        <div class="blockBtnBox">
+            <button v-for="item in 3" :class="[
+            `blockBtn${item}`,
+            {active:item==target}
+            ]" 
+            @click="scrollBlock(item)">
+                {{item}}
+            </button>
+        </div>
+    </div>
+<!-- Vue的函式庫 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        // console.log(Vue)
+        // 寫法一: Options
+        // 新增一個應用application->建立Vue實體(instance)
+        Vue.createApp({
+            data(){
+                return{
+                    target:null
+                }
+            },
+            methods:{
+                scrollTo(){
+                        console.log('scrollTo');
+                        window.scrollTo({
+                            top:0,
+                            behavior:"smooth"
+                        })
+                    },
+                    scrollDown(){
+                        console.log('scrollDown');
+                        // const box=document.getElementById('section3')
+                        // console.log(this.$refs);
+                        const box=this.$refs.section2
+                        // console.log(box.getBoundingClientRect());
+                        window.scrollTo({
+                            top:box.offsetTop,
+                            behavior:"smooth"
+                        })
+                    },
+                    scrollBlock(block){
+                        console.log(block);
+                        this.target=block;
+                        const box=this.$refs[`section${block}`]
+                        window.scrollTo({
+                            top:box.offsetTop,
+                            behavior:"smooth"
+                        })
+                    }
+            }
+        }).mount('#app') // 掛載(mount)在網頁結點(id="app")上
+
+        // 資料綁定 data bindings-->把畫面上的DOM和資料透過Vue實體來綁定
+    </script>
+</body>
+</html>
