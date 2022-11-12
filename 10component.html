@@ -8,39 +8,33 @@
 </head>
 <body>
     <div id="app">
-        <custom-header :text="header"></custom-header>
-        <cry-cry :text="1"/>
-        <cry-cry :text="2"/>
-        <cry-cry :text="3"/>
-        <cry-cry :text="4"/>
+        <custom-header :text="'我是header'"></custom-header>
+        <cry-cry :text="1"></cry-cry>
+        <cry-cry :text="2"></cry-cry>
+        <cry-cry :text="3"></cry-cry>
+        <cry-cry :text="4"></cry-cry>
     </div>
 <!-- Vue的函式庫 -->
     <script src="https://unpkg.com/vue@next"></script>
     <script>
         const app= Vue.createApp({
-            data(){
-                return{}
-            },
             components:{
-                template:`
+                'custom-header':{
+                    props:['text'],
+                    template:`
                     <p>{{text}}</p>
-                `,
-                prop:['text'],
+                `
+                }
             }
         })
         app.component('cry-cry',{
+            props:['text'],
             template:`
             <div>
-                <h5>哭哭</h5>
-                <h6>想睡想睡想睡想睡想睡</h6>
+                <h4>標題:哭哭</h4>
+                <p>內容:想睡想睡想睡想睡想睡</p>
             </div>
-            `,
-            prop:['text'],
-            data(){
-                return{
-
-                }
-            }
+            `
         })
         app.mount('#app') // 掛載(mount)在網頁結點(id="app")上
 

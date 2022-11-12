@@ -148,10 +148,10 @@
                     if(!rating) return null
                     let starStr=''
                     const star=parseInt(rating.rate)
-                    for(let index=0;index<star;index++){
+                    for(let i=0;i<star;i++){
                         starStr+='⭐'
                     }
-                    return `${starStr}${rating.count}`
+                    return `${starStr} 評論數:${rating.count}`
                 },
                 parsePrice(price){
                     return `TWD ${price*33}`
@@ -189,7 +189,7 @@
                         //     return orderItem.id === item.id
                         // })
                         // console.log(prodIndex);
-                        // console.log(this.order[prodIndex]);
+                        console.log(this.order[prodIndex]);
                         // // 將訂單數量+1
                         // // this.order[prodIndex]['count'] = this.order[prodIndex]['count']+1
                         this.order[prodIndex]['count']+=1
@@ -216,6 +216,7 @@
                     })
                     if(prodIndex<0) return;
                     if(this.order[prodIndex]['count']>1){
+                        // this.order[prodIndex]['count'] = this.order[prodIndex]['count']-1
                         this.order[prodIndex]['count']-=1
                     }else{
                         this.order.splice(prodIndex,1)
@@ -224,11 +225,14 @@
                 },
                 getStorage(){
                     let data =localStorage.getItem('xiaomeiQQ');
+                    // JSON.parse() -->將字串轉為陣列或物件
+                    // 宣告一個常數 data 將localstorage中取得的資料賦值給常數
                     data=JSON.parse(date)
                     this.order=data? data:[]
                 },
                 setStorage(){
-                    // 陣列或物件轉字串
+                    // JSON.stringify() -->將陣列或物件轉字串
+                    // 宣告一個常數 data 將其值轉換為字串(Value)存在key為"xiaomeiQQ"localstorage
                     const data=JSON.stringify(this.order);
                     localStorage.setItem('xiaomeiQQ',data);
                 }
