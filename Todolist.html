@@ -79,6 +79,9 @@
         .todolist input{
             margin-right: 5px;
         }
+        .todolist input:checked+span{
+            text-decoration: line-through;
+        }
         .todolist button{
             margin-left: 10px;
             width: 20px;
@@ -119,7 +122,7 @@
                 <ul>
                     <li v-for="(item,index) in mylist" :key="index">
                         <input type="checkbox" v-model="item.select">
-                        {{item.content}}
+                        <span>{{item.content}}</span>
                         <button @click="remove(index)">×</button>
                     </li>
                 </ul>
@@ -173,7 +176,6 @@
                 },
                 F5(){
                     this.mylist=[]
-
                 },
                 clear(){
                     this.mylist=this.mylist.filter(item => !item.select)
