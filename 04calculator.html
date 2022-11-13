@@ -131,14 +131,15 @@
                     console.log(operator);
                     // 找到operator按鈕
                     this.operator=operator
-                    // 暫存當下的數值，如果有數字->轉換成浮點數 ; 沒有則為0
+                    // 暫存當下的數值，如果有數字->轉換成parseFloat浮點數 ; 沒有則為0
                     this.cache=this.keyin ? parseFloat(this.keyin):0
                     console.log(this.cache);
                     // 把step裡的數值清空
                     this.keyin=''
                 },
                 clac(){
-                    if(this.chache === null ) return // 如果抓到的是null則不計算 ->return
+                    // 如果抓到的是null則不計算 ->return
+                    if(this.chache === null ) return
                     const keyin=this.keyin ? parseFloat(this.keyin):0
                     switch(this.operator){
                         case'+':
