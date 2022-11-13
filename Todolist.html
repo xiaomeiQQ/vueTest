@@ -4,9 +4,182 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todolist</title>
+    <title>待辦清單</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        #app{
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: RGB(249, 248, 248);
+        }
+        h2{
+            margin: 10px;
+        }
+        .addplace{
+            width: 300px;
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .addplace input{
+            width: 230px;
+            padding: 5px 15px;
+            border: 1px solid rgb(188, 188, 188);
+            border-radius: 20px;
+        }
+        .addplace button{
+            width: 30px;
+            height: 30px;
+            background-color: rgb(255, 154, 76);
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+        }
+        .card{
+            display: flex;
+            width: 480px;
+            justify-content: space-between;
+        }
+        .todolist,.done{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-width: 200px;
+            min-height: 150px;
+            padding: 10px 15px;
+            border-radius: 10px;
+        }
+        .todolist{
+            color: #395bca;
+            background-color: rgb(239, 248, 255);
+            border: 1px solid rgb(181, 203, 255);
+        }
+        .done{
+            color: #17b485;
+            background-color: #effff5;
+            border: 1px solid rgb(161, 218, 185);
+        }
+        .todolist h4,.done h4{
+            align-self: center;
+        }
+        .todolist li,.done li{
+            list-style: none;
+            display: flex;
+            align-items: center;
+            width: auto;
+            font-size: 14px;
+        }
+        .todolist input{
+            margin-right: 5px;
+        }
+        .todolist button{
+            margin-left: 10px;
+            width: 20px;
+            height: 20px;
+            color: #fff;
+            background-color: rgb(77, 105, 192);
+            border: none;
+            border-radius: 50%;
+        }
+        .wrap{
+            margin-top: 15px;
+            width: auto;
+            display: flex;
+            align-items: center;
+            color: #8e8e8e;
+            font-size: 14px;
+        }
+        .wrap button{
+            background-color: rgb(115, 115, 115);
+            color: #fff;
+            border: none;
+            margin: 10px;
+            padding: 3px 8px;
+            border-radius: 20px;
+        }
+    </style>
 </head>
 <body>
-    
+    <div id="app">
+        <h2>每周待辦✧*｡٩(ˊᗜˋ*)و✧*</h2>
+        <div class="addplace">
+            <input type="text" v-model="toDo" placeholder="你要做什麼?">
+            <button @click="addItem">+</button>
+        </div>
+        <div class="card">
+            <div class="todolist">
+                <h4>未完成</h4>
+                <ul>
+                    <li v-for="(item,index) in mylist" :key="index">
+                        <input type="checkbox" v-model="item.select">
+                        {{item.content}}
+                        <button @click="remove(index)">×</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="done">
+                <h4>已完成</h4>
+                <ul>
+                    <li v-for="(item,index) in donelist" :key="index">
+                        {{item.content}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="wrap">
+            <div v-if="mylist.length !=0">
+                你還有 {{mylist.length}} 件事情沒做
+            </div>
+            <div v-else>
+                你還沒有待辦項目哦
+            </div>
+            <button @click="F5">重置</button>
+            <button @click="clear">清除已完成</button>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return{
+                    toDo:'',
+                    mylist:[
+                        {select:false,content:'今天早餐要吃🍦'}
+                    ]
+                }
+            },
+            computed:{
+                donelist(){
+                    return this.mylist.filter(item => item.select)
+                }
+            },
+            methods:{
+                addItem(){
+                    this.mylist.push({
+                        select:false,
+                        content:this.toDo
+                    })
+                    this.toDo=''
+                },
+                remove(e){
+                    this.mylist.splice(e,1)
+                },
+                F5(){
+                    this.mylist=[]
+
+                },
+                clear(){
+                    this.mylist=this.mylist.filter(item => !item.select)
+                }
+            }
+        }).mount('#app')
+    </script>
 </body>
 </html>
