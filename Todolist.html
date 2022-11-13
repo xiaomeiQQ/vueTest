@@ -160,6 +160,7 @@
             },
             computed:{
                 donelist(){
+                    // 用filter篩選已被select的item
                     return this.mylist.filter(item => item.select)
                 }
             },
@@ -169,15 +170,19 @@
                         select:false,
                         content:this.toDo
                     })
+                    // 待辦的input要清空
                     this.toDo=''
                 },
                 remove(e){
+                    // 用splice拿掉被點的item
                     this.mylist.splice(e,1)
                 },
                 F5(){
+                    // 重置
                     this.mylist=[]
                 },
                 clear(){
+                    // 用filter留下沒被選到的
                     this.mylist=this.mylist.filter(item => !item.select)
                 }
             }
