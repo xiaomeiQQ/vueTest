@@ -5,30 +5,96 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>vueTest</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New';
+        }
+        #app{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+            margin: auto;
+            padding: 10px 15px;
+            margin-top: 20px;
+            border: 1px solid rgb(140, 140, 140);
+        }
+        .step{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 180px;
+            height: 30px;
+            padding: 0 10px;
+            background-color: rgb(233, 233, 233);
+            margin: 10px;
+        }
+        .wrap{
+            display: flex;
+            justify-content: center;
+            width: 200px;
+            margin: 10px;
+        }
+        .number{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: space-between;
+            width: 80%;
+        }
+        button{
+            font-size: 18px;
+            width: 35px;
+            height: 35px;
+            margin: 5px;
+            background-color: rgb(233, 233, 233);
+            border: none;
+            border-radius: 50%;
+        }
+        .calculate{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 20%;
+        }
+        .calculate button{
+            width: 25px;
+            height: 25px;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <button 
-            v-for="num in 9" 
-            :key="num" 
-            @click="keyin=num"
-
-            >{{num}}
-        </button>
-        
-        <button @click="keyin=0">
-            0
-        </button>
-
-        {{keyin}}
-
-        <br>
-        <button @click="reduceCount">-</button>
-        <button @click="addCount">+</button>
-        <button @click="clac">=</button>
-        <button @click="clear">Clear</button>
-        <div>step: {{step}}</div>
-        <h4>result: {{result}}</h4>
+        <div class="step">
+            {{keyin}}
+        </div>
+        <div class="wrap">
+            <div class="number">
+                <button 
+                v-for="num in 9" 
+                :key="num"
+                @click="keyNumber(num)"
+                >{{num}}
+                </button>
+                <button @click="keyNumber(0)">
+                    0
+                </button>
+                <button @click="keyDot">
+                    .
+                </button>
+            </div>
+            <div class="calculate">
+                <button @click="btn('+')">+</button>
+                <button @click="btn('-')">-</button>
+                <button @click="btn('×')">×</button>
+                <button @click="btn('÷')">÷</button>
+                <button @click="clac">=</button>
+                <button @click="clear">𝘤</button>
+            </div>
+        </div>
+        <!-- <h4>result: {{result}}</h4> -->
     </div>
 <!-- Vue的函式庫 -->
     <script src="https://unpkg.com/vue@next"></script>
@@ -36,23 +102,60 @@
         Vue.createApp({
             data(){
                 return{
-                    step:'',
-                    keyin:0,
-                    result:0
+                    keyin:'0',
+                    cache:null,
+                    operator:'',
+                    result:0,
+                    keydot:''
                 }
             },
             methods:{
-                add(){
-                    this.result+=1
+                // step
+                // 每按一個數字step裡要key進去
+                keyNumber(number){
+                    if (this.keyin=='0') this.keyin=''
+                    this.keyin+=number.toString()
                 },
-                reduce(){
-                    this.result-=1
+                // 每按一個dot要加'.'，如果已經有'.'則return
+                keyDot(){
+                    if (this.keyin.includes(".")) return
+                    this.keyin+='.'
                 },
-                calc(){
-                    
-                },
+                // 每按一次將輸入值清空
                 clear(){
-                    this.result=0
+                    this.keyin='0'
+                    this.cache=null
+                    this.operator=''
+                },
+                btn(operator){
+                    console.log(operator);
+                    // 找到operator按鈕
+                    this.operator=operator
+                    // 暫存當下的數值，如果有數字->轉換成浮點數 ; 沒有則為0
+                    this.cache=this.keyin ? parseFloat(this.keyin):0
+                    console.log(this.cache);
+                    // 把step裡的數值清空
+                    this.keyin=''
+                },
+                clac(){
+                    if(this.chache === null ) return // 如果抓到的是null則不計算 ->return
+                    const keyin=this.keyin ? parseFloat(this.keyin):0
+                    switch(this.operator){
+                        case'+':
+                            this.keyin=this.cache+keyin
+                            break;
+                        case'-':
+                            this.keyin=this.cache-keyin
+                            break;
+                        case'×':
+                            this.keyin=this.cache*keyin
+                            break;
+                        case'÷':
+                            this.keyin=this.cache/keyin
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }).mount('#app')
